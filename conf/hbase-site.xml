@@ -1,0 +1,51 @@
+<configuration>
+    <property>
+        <name>hbase.rootdir</name>
+        <value>hdfs://hadoop-hdfs-nn:9000/hbase</value>
+        <!-- hdfs://ns1/hbase 对应hdfs-site.xml的dfs.nameservices属性值 -->
+    </property>
+
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>zookeeper-node1,zookeeper-node2,zookeeper-node3</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.clientPort</name>
+        <value>2181</value>
+    </property>
+
+    <property>
+        <name>hbase.master</name>
+        <value>60000</value>
+        <description>单机版需要配主机名/IP和端口，HA方式只需要配端口</description>
+    </property>
+    <property>
+        <name>hbase.master.info.bindAddress</name>
+        <value>0.0.0.0</value>
+    </property>
+    <property>
+        <name>hbase.master.port</name>
+        <value>16000</value>
+    </property>
+    <property>
+        <name>hbase.master.info.port</name>
+        <value>16010</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.port</name>
+        <value>16020</value>
+    </property>
+    <property>
+        <name>hbase.regionserver.info.port</name>
+        <value>16030</value>
+    </property>
+
+    <property>
+        <name>hbase.wal.provider</name>
+        <value>filesystem</value> <!--也可以用multiwal-->
+    </property>
+</configuration>

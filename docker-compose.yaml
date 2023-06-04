@@ -1,0 +1,137 @@
+version: '3'
+services:
+  hbase-master-1:
+    image: registry.cn-hangzhou.aliyuncs.com/bigdata_cloudnative/hbase:2.5.4
+    user: "hadoop:hadoop"
+    container_name: hbase-master-1
+    hostname: hbase-master-1
+    restart: always
+    privileged: true
+    env_file:
+      - .env
+    volumes:
+      - ./conf/hbase-env.sh:${HBASE_HOME}/conf/hbase-env.sh
+      - ./conf/hbase-site.xml:${HBASE_HOME}/conf/hbase-site.xml
+      - ./conf/backup-masters:${HBASE_HOME}/conf/backup-masters
+      - ./conf/regionservers:${HBASE_HOME}/conf/regionservers
+      - ./conf/hadoop/core-site.xml:${HBASE_HOME}/conf/core-site.xml
+      - ./conf/hadoop/hdfs-site.xml:${HBASE_HOME}/conf/hdfs-site.xml
+    ports:
+      - "36010:${HBASE_MASTER_PORT}"
+    command: ["sh","-c","/opt/apache/bootstrap.sh hbase-master"]
+    networks:
+      - hadoop-network
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tnlp|grep :${HBASE_MASTER_PORT} || exit 1"]
+      interval: 10s
+      timeout: 20s
+      retries: 3
+  hbase-master-2:
+    image: registry.cn-hangzhou.aliyuncs.com/bigdata_cloudnative/hbase:2.5.4
+    user: "hadoop:hadoop"
+    container_name: hbase-master-2
+    hostname: hbase-master-2
+    restart: always
+    privileged: true
+    env_file:
+      - .env
+    volumes:
+      - ./conf/hbase-env.sh:${HBASE_HOME}/conf/hbase-env.sh
+      - ./conf/hbase-site.xml:${HBASE_HOME}/conf/hbase-site.xml
+      - ./conf/backup-masters:${HBASE_HOME}/conf/backup-masters
+      - ./conf/regionservers:${HBASE_HOME}/conf/regionservers
+      - ./conf/hadoop/core-site.xml:${HBASE_HOME}/conf/core-site.xml
+      - ./conf/hadoop/hdfs-site.xml:${HBASE_HOME}/conf/hdfs-site.xml
+    ports:
+      - "36011:${HBASE_MASTER_PORT}"
+    command: ["sh","-c","/opt/apache/bootstrap.sh hbase-master hbase-master-1 ${HBASE_MASTER_PORT}"]
+    networks:
+      - hadoop-network
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tnlp|grep :${HBASE_MASTER_PORT} || exit 1"]
+      interval: 10s
+      timeout: 20s
+      retries: 3
+  hbase-regionserver-1:
+    image: registry.cn-hangzhou.aliyuncs.com/bigdata_cloudnative/hbase:2.5.4
+    user: "hadoop:hadoop"
+    container_name: hbase-regionserver-1
+    hostname: hbase-regionserver-1
+    restart: always
+    privileged: true
+    env_file:
+      - .env
+    volumes:
+      - ./conf/hbase-env.sh:${HBASE_HOME}/conf/hbase-env.sh
+      - ./conf/hbase-site.xml:${HBASE_HOME}/conf/hbase-site.xml
+      - ./conf/backup-masters:${HBASE_HOME}/conf/backup-masters
+      - ./conf/regionservers:${HBASE_HOME}/conf/regionservers
+      - ./conf/hadoop/core-site.xml:${HBASE_HOME}/conf/core-site.xml
+      - ./conf/hadoop/hdfs-site.xml:${HBASE_HOME}/conf/hdfs-site.xml
+    ports:
+      - "36030:${HBASE_REGIONSERVER_PORT}"
+    command: ["sh","-c","/opt/apache/bootstrap.sh hbase-regionserver hbase-master-1 ${HBASE_MASTER_PORT}"]
+    networks:
+      - hadoop-network
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tnlp|grep :${HBASE_REGIONSERVER_PORT} || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+  hbase-regionserver-2:
+    image: registry.cn-hangzhou.aliyuncs.com/bigdata_cloudnative/hbase:2.5.4
+    user: "hadoop:hadoop"
+    container_name: hbase-regionserver-2
+    hostname: hbase-regionserver-2
+    restart: always
+    privileged: true
+    env_file:
+      - .env
+    volumes:
+      - ./conf/hbase-env.sh:${HBASE_HOME}/conf/hbase-env.sh
+      - ./conf/hbase-site.xml:${HBASE_HOME}/conf/hbase-site.xml
+      - ./conf/backup-masters:${HBASE_HOME}/conf/backup-masters
+      - ./conf/regionservers:${HBASE_HOME}/conf/regionservers
+      - ./conf/hadoop/core-site.xml:${HBASE_HOME}/conf/core-site.xml
+      - ./conf/hadoop/hdfs-site.xml:${HBASE_HOME}/conf/hdfs-site.xml
+    ports:
+      - "36031:${HBASE_REGIONSERVER_PORT}"
+    command: ["sh","-c","/opt/apache/bootstrap.sh hbase-regionserver hbase-master-1 ${HBASE_MASTER_PORT}"]
+    networks:
+      - hadoop-network
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tnlp|grep :${HBASE_REGIONSERVER_PORT} || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+  hbase-regionserver-3:
+    image: registry.cn-hangzhou.aliyuncs.com/bigdata_cloudnative/hbase:2.5.4
+    user: "hadoop:hadoop"
+    container_name: hbase-regionserver-3
+    hostname: hbase-regionserver-3
+    restart: always
+    privileged: true
+    env_file:
+      - .env
+    volumes:
+      - ./conf/hbase-env.sh:${HBASE_HOME}/conf/hbase-env.sh
+      - ./conf/hbase-site.xml:${HBASE_HOME}/conf/hbase-site.xml
+      - ./conf/backup-masters:${HBASE_HOME}/conf/backup-masters
+      - ./conf/regionservers:${HBASE_HOME}/conf/regionservers
+      - ./conf/hadoop/core-site.xml:${HBASE_HOME}/conf/core-site.xml
+      - ./conf/hadoop/hdfs-site.xml:${HBASE_HOME}/conf/hdfs-site.xml
+    ports:
+      - "36032:${HBASE_REGIONSERVER_PORT}"
+    command: ["sh","-c","/opt/apache/bootstrap.sh hbase-regionserver hbase-master-1 ${HBASE_MASTER_PORT}"]
+    networks:
+      - hadoop-network
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tnlp|grep :${HBASE_REGIONSERVER_PORT} || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+
+# 连接外部网络
+networks:
+  hadoop-network:
+    external: true
