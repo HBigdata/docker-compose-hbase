@@ -570,7 +570,7 @@ docker-compose -f docker-compose.yaml ps
 ```
 ## 五、简单测试验证
 访问web：`http://ip:36010/`
-![在这里插入图片描述](https://img-blog.csdnimg.cn/070dd49f274c450593eff5653df19951.png)
+![输入图片说明](images/1.png)
 
 ```bash
 docker exec -it hbase-master-1 bash
